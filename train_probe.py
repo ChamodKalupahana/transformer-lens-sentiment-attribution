@@ -189,37 +189,11 @@ def main():
     for i, acc in enumerate(layer_accuracies):
         print(f"{i:5d} | {acc:.3f}")
 
-    # Interactive Loop
-    print("\n" + "="*50)
-    print("Interactive Sentiment Analysis")
-    print("Enter a sentence to see how the model perceives its sentiment across layers.")
-    print("Type 'exit' or 'quit' to stop.")
-    print("="*50 + "\n")
-    
-    while True:
-        user_input = input("Enter prompt: ")
-        if user_input.lower() in ["exit", "quit", ""]:
-            break
-            
-        print("\nAnalyzing...", end="\r")
-        
-        scores = []
-        for layer in range(model.cfg.n_layers):
-            # Get activation for single prompt
-            # We can optimize this by getting all layers at once but for one prompt it's fine
-            act = get_activations(model, [user_input], layer)
-            probe = probes[layer]
-            score = get_sentiment_score(probe, act)
-            scores.append(score)
-            
-        print(f"Analysis for: '{user_input}'")
-        print("Layer | Sentiment Score (-1 to 1) | Interpretation")
-        print("------|---------------------------|---------------")
-        for i, score in enumerate(scores):
-            interpretation = "Positive" if score > 0.5 else "Negative" if score < -0.5 else "Neutral/Mixed"
-            bar_len = int((score + 1) * 10) # 0 to 20
-            bar = "*" * bar_len + "." * (20 - bar_len)
-            print(f"{i:5d} | {score:6.3f} [{bar}] | {interpretation}")
-        print("\n")
+
+    # Save probes
+    print("Saving probes to sentiment_probes.pt...")
+    torch.save(probes, "sentiment_probes.pt")
+    print("Probes saved.")
+
 if __name__ == "__main__":
     main()
