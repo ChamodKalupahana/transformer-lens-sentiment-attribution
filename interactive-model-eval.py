@@ -58,6 +58,14 @@ def main():
             bar = "*" * bar_len + "." * (20 - bar_len)
             print(f"{i:5d} | {score:6.3f} [{bar}] | {interpretation}")
         print("\n")
+        
+        # Generation
+        print("Generating text...", end="\r")
+        n_tokens = 20
+        gen_text = model.generate(user_input, max_new_tokens=n_tokens, verbose=False)
+        print(f"Generated ({n_tokens} tokens):")
+        print(f"{gen_text}")
+        print("-" * 50 + "\n")
 
 if __name__ == "__main__":
     main()
