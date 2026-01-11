@@ -56,9 +56,25 @@ def get_activations(model, prompts, layer: int):
     logits, cache = model.run_with_cache(toks, names_filter=[hook_name])
     
     acts = cache[hook_name]              # [batch, seq, d_model]
-    # Use the activation of the last token (which predicts the next token, or contains sentence context)
-    # Note: For classification sometimes we use the last token.
-    X = acts[:, -1, :].detach().cpu().float()
+    
+    # Identify the last non-padding token position
+    # GPT-2 tokenizer usually uses EOS as BOS/PAD, but let's check explicitly
+    if model.tokenizer.pad_token_id is not None:
+        pad_id = model.tokenizer.pad_token_id
+        # Create mask of non-pad tokens
+        mask = (toks != pad_id)
+        # Find index of last true
+        # We can sum the mask to get length (assuming right padding or no padding in middle)
+        # Note: attention_mask usually handles this, but here we work with tokens directly
+        # If padded on right: last_idx = sum(mask) - 1
+        lengths = mask.sum(dim=1) - 1
+    else:
+        # If no pad token, assume full length
+        lengths = torch.full((toks.shape[0],), toks.shape[1] - 1, device=device)
+
+    # Gather the activations at the correct positions
+    # acts[i, lengths[i], :]
+    X = acts[torch.arange(acts.shape[0], device=device), lengths, :].detach().cpu().float()
     return X
 
 def train_linear_probe(X_train, y_train, X_val, y_val, epochs=50, lr=1e-3, batch_size=32, verbose=False):
@@ -95,7 +111,22 @@ def train_linear_probe(X_train, y_train, X_val, y_val, epochs=50, lr=1e-3, batch
         preds = logits_val.argmax(dim=-1)
         acc = (preds == y_val_d).float().mean().item()
         
-    return acc
+    return probe, acc
+
+def get_sentiment_score(probe, activation):
+    """
+    Returns a score between -1 (negative) and 1 (positive).
+    """
+    probe.eval()
+    with torch.no_grad():
+        activation = activation.to(device)
+        logits = probe(activation)
+        probs = torch.softmax(logits, dim=-1)
+        # Assuming class 1 is positive and class 0 is negative
+        # score = p(1) - p(0)
+        # which is equivalent to 2*p(1) - 1
+        score = probs[0, 1].item() - probs[0, 0].item()
+    return score
 
 def main():
     print("Loading model...")
@@ -120,6 +151,7 @@ def main():
     val_labels = labels[val_idx]
     
     layer_accuracies = []
+    probes = []
     
     print(f"Looping through {model.cfg.n_layers} layers...")
     for layer in tqdm(range(model.cfg.n_layers)):
@@ -128,9 +160,17 @@ def main():
         X_val = get_activations(model, val_prompts, layer)
         
         # Train probe
-        acc = train_linear_probe(X_train, train_labels, X_val, val_labels, epochs=30, lr=1e-3)
+        probe, acc = train_linear_probe(X_train, train_labels, X_val, val_labels, epochs=30, lr=1e-3)
         layer_accuracies.append(acc)
         # print(f"Layer {layer}: Acc {acc:.3f}")
+        
+        # Save probe (or keep in memory)
+        # For simplicity, we'll just keep them in a list if memory allows (small model, linear probes are tiny)
+        from types import SimpleNamespace
+        probes.append(probe)   
+    
+    # Store probes in a dictionary or list for easy access
+    # probes is already a list indexed by layer
 
     # Plot
     plt.figure(figsize=(10, 6))
@@ -149,5 +189,37 @@ def main():
     for i, acc in enumerate(layer_accuracies):
         print(f"{i:5d} | {acc:.3f}")
 
+    # Interactive Loop
+    print("\n" + "="*50)
+    print("Interactive Sentiment Analysis")
+    print("Enter a sentence to see how the model perceives its sentiment across layers.")
+    print("Type 'exit' or 'quit' to stop.")
+    print("="*50 + "\n")
+    
+    while True:
+        user_input = input("Enter prompt: ")
+        if user_input.lower() in ["exit", "quit", ""]:
+            break
+            
+        print("\nAnalyzing...", end="\r")
+        
+        scores = []
+        for layer in range(model.cfg.n_layers):
+            # Get activation for single prompt
+            # We can optimize this by getting all layers at once but for one prompt it's fine
+            act = get_activations(model, [user_input], layer)
+            probe = probes[layer]
+            score = get_sentiment_score(probe, act)
+            scores.append(score)
+            
+        print(f"Analysis for: '{user_input}'")
+        print("Layer | Sentiment Score (-1 to 1) | Interpretation")
+        print("------|---------------------------|---------------")
+        for i, score in enumerate(scores):
+            interpretation = "Positive" if score > 0.5 else "Negative" if score < -0.5 else "Neutral/Mixed"
+            bar_len = int((score + 1) * 10) # 0 to 20
+            bar = "*" * bar_len + "." * (20 - bar_len)
+            print(f"{i:5d} | {score:6.3f} [{bar}] | {interpretation}")
+        print("\n")
 if __name__ == "__main__":
     main()
