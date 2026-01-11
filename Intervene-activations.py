@@ -67,5 +67,15 @@ def main():
         print(f"{gen_text}")
         print("-" * 50 + "\n")
 
+def intervene(layers: [int]):
+    """
+    move the model activations in the opposite direction away from the current sentiment
+    for each layer, post activations in residual stream
+    """
+
+    
+    return
+
+
 if __name__ == "__main__":
     main()
