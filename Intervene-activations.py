@@ -67,14 +67,63 @@ def main():
         print(f"{gen_text}")
         print("-" * 50 + "\n")
 
+    
+        # Intervention Loop
+        while True:
+            intervene_cmd = input("\nDo you want to intervene? (y/n): ").strip().lower()
+            if intervene_cmd != 'y':
+                break
+                
+            try:
+                layers_input = input("Enter layers to intervene on (comma separated, e.g. 6,7,8): ")
+                target_layers = [int(x.strip()) for x in layers_input.split(',')]
+                
+                strength = float(input("Enter intervention strength (positive for pos, negative for neg): "))
+            except ValueError:
+                print("Invalid input. Please try again.")
+                continue
+                
+            print(f"\nGenerations with intervention (Layers: {target_layers}, Strength: {strength}):")
+            
+            # Define hooks
+            hooks = []
+            for layer in target_layers:
+                if layer < 0 or layer >= model.cfg.n_layers:
+                    continue
+                    
+                # Get direction
+                probe = probes[layer]
+                # weight shape: [out_features, in_features] -> [2, d_model]
+                # Direction: Positive (index 1) - Negative (index 0)
+                direction = probe.weight[1] - probe.weight[0] 
+                direction = direction.to(device)
+                # Normalize direction
+                direction = direction / direction.norm()
+                
+                hook_name = f"blocks.{layer}.hook_resid_post"
+                
+                def intervention_hook(value, hook, dir_vec=direction, alpha=strength):
+                    # value shape: [batch, seq, d_model]
+                    # Add direction to all tokens
+                    return value + alpha * dir_vec
+                    
+                hooks.append((hook_name, intervention_hook))
+                
+            # Generate with hooks
+            with model.hooks(fwd_hooks=hooks):
+                gen_text_intervened = model.generate(user_input, max_new_tokens=n_tokens, verbose=False)
+                
+            print(f"Original:  {gen_text}")
+            print(f"Intervened: {gen_text_intervened}")
+            print("-" * 50)
+            
+        print("\n") # End of prompt loop iteration
+
 def intervene(layers: [int]):
     """
-    move the model activations in the opposite direction away from the current sentiment
-    for each layer, post activations in residual stream
+    Placeholder for potential future use function
     """
-
-    
-    return
+    pass
 
 
 if __name__ == "__main__":

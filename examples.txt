@@ -1,0 +1,250 @@
+root ~/c/transformer-lens-sentiment-attribution main *6 !1 ❯ /opt/conda/envs/arena-env/bin/python /root/chamod-mini-experiment/transfo
+rmer-lens-sentiment-attribution/interactive-model-eval.py
+Loading model...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loaded pretrained model gpt2-small into HookedTransformer
+Model loaded.
+Loaded 12 probes.
+
+==================================================
+Interactive Sentiment Analysis
+Enter a sentence to see how the model perceives its sentiment across layers.
+Type 'exit' or 'quit' to stop.
+==================================================
+
+Enter prompt: my boss loves mer
+
+Analysis for: 'my boss loves mer'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 |  0.999 [*******************.] | Positive
+    1 |  0.999 [*******************.] | Positive
+    2 |  0.972 [*******************.] | Positive
+    3 |  0.981 [*******************.] | Positive
+    4 |  0.973 [*******************.] | Positive
+    5 |  0.945 [*******************.] | Positive
+    6 |  0.832 [******************..] | Positive
+    7 |  0.997 [*******************.] | Positive
+    8 |  0.946 [*******************.] | Positive
+    9 |  0.999 [*******************.] | Positive
+   10 |  0.973 [*******************.] | Positive
+   11 |  0.989 [*******************.] | Positive
+
+
+Generated (20 tokens):
+my boss loves merfowe
+
+This week Fellow Institutioners welcomed Rank IdleAmeriators to the event
+--------------------------------------------------
+
+Enter prompt: my m
+
+Analysis for: 'my m'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 | -0.679 [***.................] | Negative
+    1 | -0.555 [****................] | Negative
+    2 | -0.781 [**..................] | Negative
+    3 | -0.823 [*...................] | Negative
+    4 | -0.327 [******..............] | Neutral/Mixed
+    5 | -0.353 [******..............] | Neutral/Mixed
+    6 | -0.163 [********............] | Neutral/Mixed
+    7 | -0.526 [****................] | Negative
+    8 | -0.309 [******..............] | Neutral/Mixed
+    9 |  0.442 [**************......] | Neutral/Mixed
+   10 | -0.561 [****................] | Negative
+   11 | -0.914 [....................] | Negative
+
+
+oGenerated (20 tokens):
+my mama.X bititshow is apparently the first one to host Better Luck Week.
+
+by
+--------------------------------------------------
+
+Enter prompt:my boss hates me
+
+Analysis for: 'bmy boss hates me'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 | -0.903 [....................] | Negative
+    1 | -0.708 [**..................] | Negative
+    2 | -0.861 [*...................] | Negative
+    3 | -0.914 [....................] | Negative
+    4 | -0.917 [....................] | Negative
+    5 | -0.987 [....................] | Negative
+    6 | -0.977 [....................] | Negative
+    7 | -0.697 [***.................] | Negative
+    8 | -0.944 [....................] | Negative
+    9 | -0.392 [******..............] | Neutral/Mixed
+   10 | -0.965 [....................] | Negative
+   11 | -0.977 [....................] | Negative
+
+
+Generated (20 tokens):
+bmy boss hates me because National Football League iswatching YOU and toed myself 6 female FO's call me anyone !
+
+--------------------------------------------------
+
+Enter prompt: I think that cassie is an okay friend but she is too much of a gossip
+
+Analysis for: 'I think that cassie is an okay friend but she is too much of a gossip'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 | -0.159 [********............] | Neutral/Mixed
+    1 |  0.689 [****************....] | Positive
+    2 |  0.748 [*****************...] | Positive
+    3 |  0.863 [******************..] | Positive
+    4 |  0.883 [******************..] | Positive
+    5 |  0.915 [*******************.] | Positive
+    6 |  0.869 [******************..] | Positive
+    7 | -0.595 [****................] | Negative
+    8 |  0.964 [*******************.] | Positive
+    9 |  0.957 [*******************.] | Positive
+   10 |  0.987 [*******************.] | Positive
+   11 |  0.872 [******************..] | Positive
+
+
+Generated (20 tokens):
+I think that cassie is an okay friend but she is too much of a gossipy judge to give a shove. I've slowly been coming to them. I like that I know
+--------------------------------------------------
+
+Enter prompt: I think that cassie is an good friend but she is too much of a gossip                                
+
+Analysis for: 'I think that cassie is an good friend but she is too much of a gossip   '
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 |  0.124 [***********.........] | Neutral/Mixed
+    1 | -0.346 [******..............] | Neutral/Mixed
+    2 | -0.697 [***.................] | Negative
+    3 | -0.532 [****................] | Negative
+    4 | -0.796 [**..................] | Negative
+    5 | -0.168 [********............] | Neutral/Mixed
+    6 |  0.403 [**************......] | Neutral/Mixed
+    7 |  0.723 [*****************...] | Positive
+    8 | -0.303 [******..............] | Neutral/Mixed
+    9 | -0.395 [******..............] | Neutral/Mixed
+   10 |  0.660 [****************....] | Positive
+   11 |  0.156 [***********.........] | Neutral/Mixed
+
+
+Generated (20 tokens):
+I think that cassie is an good friend but she is too much of a gossip   ̄m- ͡° ͜ʖ ͡° ͜
+--------------------------------------------------
+
+Enter prompt: I think that cassie is an good friend but she is too much of a gossip and it fucks me off
+
+Analysis for: 'I think that cassie is an good friend but she is too much of a gossip and it fucks me off'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 | -0.360 [******..............] | Neutral/Mixed
+    1 | -0.192 [********............] | Neutral/Mixed
+    2 | -0.835 [*...................] | Negative
+    3 | -0.227 [*******.............] | Neutral/Mixed
+    4 | -0.589 [****................] | Negative
+    5 | -0.926 [....................] | Negative
+    6 | -0.910 [....................] | Negative
+    7 | -0.823 [*...................] | Negative
+    8 | -0.319 [******..............] | Neutral/Mixed
+    9 | -0.715 [**..................] | Negative
+   10 | -0.942 [....................] | Negative
+   11 |  0.790 [*****************...] | Positive
+
+
+Generated (20 tokens):
+I think that cassie is an good friend but she is too much of a gossip and it fucks me off...just the day when I was just getting in the room and actually meeting jacks but every time
+--------------------------------------------------
+
+Enter prompt: I think that cassie is a good friend but she is too much of a gossip and it fucks me off
+
+Analysis for: 'I think that cassie is a good friend but she is too much of a gossip and it fucks me off'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 | -0.350 [******..............] | Neutral/Mixed
+    1 | -0.170 [********............] | Neutral/Mixed
+    2 | -0.833 [*...................] | Negative
+    3 | -0.224 [*******.............] | Neutral/Mixed
+    4 | -0.582 [****................] | Negative
+    5 | -0.925 [....................] | Negative
+    6 | -0.909 [....................] | Negative
+    7 | -0.817 [*...................] | Negative
+    8 | -0.299 [*******.............] | Neutral/Mixed
+    9 | -0.707 [**..................] | Negative
+   10 | -0.939 [....................] | Negative
+   11 |  0.791 [*****************...] | Positive
+
+
+Generated (20 tokens):
+I think that cassie is a good friend but she is too much of a gossip and it fucks me off for telling so much of her stuff out of East London to a strangers in Rome which Sam Richards at
+--------------------------------------------------
+
+Enter prompt: I think that cassie is a good friend but she's weird when she drinks too much
+
+Analysis for: 'I think that cassie is a good friend but she's weird when she drinks too much'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 |  0.406 [**************......] | Neutral/Mixed
+    1 |  0.802 [******************..] | Positive
+    2 |  0.526 [***************.....] | Positive
+    3 |  0.032 [**********..........] | Neutral/Mixed
+    4 | -0.357 [******..............] | Neutral/Mixed
+    5 |  0.357 [*************.......] | Neutral/Mixed
+    6 |  0.025 [**********..........] | Neutral/Mixed
+    7 | -0.671 [***.................] | Negative
+    8 |  0.846 [******************..] | Positive
+    9 |  0.744 [*****************...] | Positive
+   10 | -0.661 [***.................] | Negative
+   11 | -1.000 [....................] | Negative
+
+
+Generated (20 tokens):
+I think that cassie is a good friend but she's weird when she drinks too much since there's too much stuff in there, no matter what the wrongful taste inIt's actually
+--------------------------------------------------
+
+Enter prompt: I think that cassie is a good friend but she is weird when she drinks too much
+
+Analysis for: 'I think that cassie is a good friend but she is weird when she drinks too much'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 |  0.279 [************........] | Neutral/Mixed
+    1 |  0.770 [*****************...] | Positive
+    2 |  0.486 [**************......] | Neutral/Mixed
+    3 |  0.027 [**********..........] | Neutral/Mixed
+    4 | -0.349 [******..............] | Neutral/Mixed
+    5 |  0.433 [**************......] | Neutral/Mixed
+    6 |  0.074 [**********..........] | Neutral/Mixed
+    7 | -0.641 [***.................] | Negative
+    8 |  0.868 [******************..] | Positive
+    9 |  0.791 [*****************...] | Positive
+   10 | -0.616 [***.................] | Negative
+   11 | -1.000 [....................] | Negative
+
+
+Generated (20 tokens):
+I think that cassie is a good friend but she is weird when she drinks too much but she likes to get drunk that way. Though, I do appreciate the "josei pour
+--------------------------------------------------
+
+Enter prompt: I think that cassie is a good friend but she is weird when she drinks too much. She is usually fine, but when she gets drunk it makes everyone uncomfortable 
+
+Analysis for: 'I think that cassie is a good friend but she is weird when she drinks too much. She is usually fine, but when she gets drunk it makes everyone uncomfortable'
+Layer | Sentiment Score (-1 to 1) | Interpretation
+------|---------------------------|---------------
+    0 |  0.278 [************........] | Neutral/Mixed
+    1 | -0.171 [********............] | Neutral/Mixed
+    2 | -0.028 [*********...........] | Neutral/Mixed
+    3 | -0.788 [**..................] | Negative
+    4 | -0.362 [******..............] | Neutral/Mixed
+    5 | -0.838 [*...................] | Negative
+    6 | -0.849 [*...................] | Negative
+    7 | -0.794 [**..................] | Negative
+    8 | -0.992 [....................] | Negative
+    9 |  0.878 [******************..] | Positive
+   10 |  0.851 [******************..] | Positive
+   11 | -0.937 [....................] | Negative
+
+
+Generated (20 tokens):
+I think that cassie is a good friend but she is weird when she drinks too much. She is usually fine, but when she gets drunk it makes everyone uncomfortable to drink too much with her get down with her. Sparrow is an amazing playwright but she prefers
+--------------------------------------------------
+
+Enter prompt:  
