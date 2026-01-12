@@ -2,6 +2,33 @@ import torch
 from transformer_lens import HookedTransformer
 from train_probe import get_activations, get_sentiment_score, device
 import sys
+from jaxtyping import Float
+from torch import Tensor
+
+
+def apply_scale(
+    resid: Float[Tensor, "batch seq d_model"],
+    flip_dir: Float[Tensor, "d_model"],
+    scale: float,
+) -> Float[Tensor, "batch seq d_model"]:
+    """
+    Returns a version of the residual stream, modified by the amount `scale` in the
+    direction `flip_dir`.
+    """
+    flip_dir_normed = flip_dir / flip_dir.norm()
+
+    # Calculate projection for all tokens
+    # resid: [batch, seq, d_model]
+    # flip_dir_normed: [d_model]
+    # alpha: [batch, seq]
+    alpha = torch.einsum("bsd,d->bs", resid, flip_dir_normed)
+    
+    # Calculate delta
+    # alpha unsqueezed: [batch, seq, 1]
+    # We want (scale + 1) * alpha * dir
+    delta = (scale + 1) * alpha.unsqueeze(-1) * flip_dir_normed
+    
+    return resid - delta
 
 def main():
     print("Loading model...")
@@ -104,8 +131,8 @@ def main():
                 
                 def intervention_hook(value, hook, dir_vec=direction, alpha=strength):
                     # value shape: [batch, seq, d_model]
-                    # Add direction to all tokens
-                    return value + alpha * dir_vec
+                    # Apply scale intervention
+                    return apply_scale(value, dir_vec, alpha)
                     
                 hooks.append((hook_name, intervention_hook))
                 
@@ -119,11 +146,6 @@ def main():
             
         print("\n") # End of prompt loop iteration
 
-def intervene(layers: [int]):
-    """
-    Placeholder for potential future use function
-    """
-    pass
 
 
 if __name__ == "__main__":
