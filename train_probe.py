@@ -9,7 +9,7 @@ from tqdm import tqdm
 import random
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-TRAIN_SAMPLE_LIMIT = 2000
+TRAIN_SAMPLE_LIMIT = 20000
 
 def load_sentiment_data(csv_path, limit=None):
     """
