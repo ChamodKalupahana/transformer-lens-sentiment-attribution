@@ -4,7 +4,7 @@ Hello! I did a quick project over the weekend on some of the mech interp stuff w
 
 # Aim
 
-Being inspired from induction heads and IOI, I wanted to interpret and manipulate the models understanding of sentiment.
+Being inspired from induction heads and IOI, I wanted to interpret and manipulate the model's understanding of sentiment.
 
 ### Training the probe
 
@@ -19,21 +19,21 @@ Unfortunately I didn't get to the end of the OthelloGPT before trying this proje
 
 <sub>Table: A small extract of the sentiment dataset.</sub>
 
-I wasn’t sure which layer to intervene at so I didn’t to train on all of them, and determine which one was best.
+I wasn’t sure which layer to intervene at so I decided to train on all of them, and determine which one was best.
 
 <figure>
   <img src="examples_screenshots/my_boss_hates_me.png" alt="Small test to confirm probe" width="500"/>
   <figcaption><sub>Figure A: Small test to confirm probe could correctly identify some sentiment</sub></figcaption>
 </figure>
 
-I was happy to see that it had some idea of sentiment but playing around with it, it kep giving various false postives which I decided to measure in the confusion matrix below:
+I was happy to see that it had some idea of sentiment but playing around with it, it kept giving various false positives which I decided to measure in the confusion matrix below:
 
 <figure>
   <img src="confusion_matrices_subplots.png" alt="Confusion matrix of 12 probes" width="1000"/>
   <figcaption><sub>Figure B: Confusion matrix of 12 probes trained for at each layer (12 layers of GPT-2-small). Tested on held-out dataset of ~2k rows</sub></figcaption>
 </figure>
 
-Based from Figure B, I thought it was reasonable to intervene at the later layers of the model, particularly at layers 7 -> 11. 
+Based on Figure B, I thought it was reasonable to intervene at the later layers of the model, particularly at layers 7 -> 11. 
 
 ## Intervening
 
@@ -54,11 +54,11 @@ My idea was to flip in the opposite of the model’s current *thinking* of senti
   <figcaption><sub>Figure C: The probe getting mixed sentiment and then intervened to be more negative (flipped by -1)</sub></figcaption>
 </figure>
 
-The flipping of the direction in done within `apply_scale` which made deciding intervention strength slightly confusing.
+The flipping of the direction is done within `apply_scale` which made deciding intervention strength slightly confusing.
 
 <figure>
   <img src="examples_screenshots/coding_probes.png" alt="Coding probes sentiment intervention" width="1000"/>
-  <figcaption><sub>Figure D: Intervening twice. Initally with a intervention strength = 20 => -20 along the probe's direction of postive sentiment => 20x more negative. Then 20x more postive for the 2nd intervention. </sub></figcaption>
+  <figcaption><sub>Figure D: Intervening twice. Initially with an intervention strength = 20 => -20 along the probe's direction of positive sentiment => 20x more negative. Then 20x more positive for the 2nd intervention. </sub></figcaption>
 </figure>
 
 
