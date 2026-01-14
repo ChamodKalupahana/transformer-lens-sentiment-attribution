@@ -5,7 +5,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 import sys
 import pandas as pd
 
-TEST_SAMPLE_LIMIT = 500
+TEST_SAMPLE_LIMIT = 3535
 
 def main():
     print("Loading model...")
@@ -70,7 +70,7 @@ def main():
         ax.set_xlabel('Predicted Label')
 
     plt.tight_layout()
-    plt.savefig('confusion_matrices_subplots.png')
+    plt.savefig('confusion_matrices_subplots.png', dpi=500)
     print("\nSaved confusion matrices to confusion_matrices_subplots.png")
 
 if __name__ == "__main__":
