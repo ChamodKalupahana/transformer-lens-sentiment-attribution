@@ -1,5 +1,3 @@
-# transformer-lens-sentiment-attribution
-
 # Introduction
 
 Hello! I did a quick project over the weekend on some of the mech interp stuff we learned last week, in particular the intervening on activations with linear probe from Chapter 1.5 - OthelloGPT from the ARENA notebooks.
